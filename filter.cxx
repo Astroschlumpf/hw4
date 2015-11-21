@@ -1,4 +1,5 @@
 #include <cmath>
+#include <iostream> // debug
 #include <fstream>
 #include <cstdlib>
 
@@ -6,7 +7,9 @@ using namespace std;
 
 int fLength(const string fname){
   ifstream file(fname.c_str(), ios::binary | ios::ate);
-  return file.tellg(); // Rueckgabe der Dateilaenge
+  return (int)(file.tellg()/7.5 - 1); // Rueckgabe der Dateilaenge
+  // Beachte, dass Steuerzeichen keine volle Byte-Laenge haben, daher 7.5
+  // und die Abrundung per -1
 }
 
 void reading(double* const p, const int N, const string fname){
@@ -37,6 +40,8 @@ int main(){
   const string filename = "noisy.txt";
   const int N = fLength(filename); // bestimme die Dateilaenge von noisy.txt
   double p[N]; // Array fester Groesse, das spaeter die Werte sammelt
+  
+  // cout << N << endl; // debug
   
   reading(p, N, filename); // Datei einlesen und in p schreiben
   dreiMitt(p, N); // fortlaufende Mittelwerte bestimmen und in p schreiben

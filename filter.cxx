@@ -7,9 +7,8 @@ using namespace std;
 
 int fLength(const string fname){
   ifstream file(fname.c_str(), ios::binary | ios::ate);
-  return (int)(file.tellg()/7.5 - 1); // Rueckgabe der Dateilaenge
-  // Beachte, dass Steuerzeichen keine volle Byte-Laenge haben, daher 7.5
-  // und die Abrundung per -1
+  return (int)(file.tellg()/8.0 + 1); // Rueckgabe der Dateilaenge
+  // Teilen durch fuer Bytelaenge, Aufrunden per +1 um alles abzudecken
 }
 
 void reading(double* const p, const int N, const string fname){

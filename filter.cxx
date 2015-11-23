@@ -1,18 +1,17 @@
 #include <cmath>
-#include <iostream> // debug
+// #include <iostream> // debug
 #include <fstream>
 #include <cstdlib>
 
 using namespace std;
 
-int fLength(const string fname){
+int fLength(const string& fname){
   ifstream file(fname.c_str(), ios::binary | ios::ate);
-  return (int)(file.tellg()/7.5 - 1); // Rueckgabe der Dateilaenge
-  // Beachte, dass Steuerzeichen keine volle Byte-Laenge haben, daher 7.5
-  // und die Abrundung per -1
+  return (int)(file.tellg()/8.0 + 1); // Rueckgabe der Dateilaenge
+  // Teilen durch 8 fuer Bytelaenge, Aufrunden per +1 um alles abzudecken
 }
 
-void reading(double* const p, const int N, const string fname){
+void reading(double* const p, const int N, const string& fname){
   // Lesefunktion aus der Vorlesung - ohne Spaltensprung
   ifstream in(fname.c_str()); // create input file stream
   for (int i = 0; i < N; i++){
@@ -35,6 +34,14 @@ void dreiMitt(double* const p, const int N){
   p[N-1] = p[N-2];
 }
 
+void Fwrite(double* const p, const int N, string fname){
+  ofstream out("filtered.txt");
+  for(int i=0; i < N; i++){
+    out << p[i] << endl;
+  }
+  out.close();
+}
+
 
 int main(){
   const string filename = "noisy.txt";
@@ -47,10 +54,7 @@ int main(){
   dreiMitt(p, N); // fortlaufende Mittelwerte bestimmen und in p schreiben
   
   // Dateiausgabe
-  ofstream out("filtered.txt");
-  for(int i=0; i < N; i++){
-    out << p[i] << endl;
-  }
+  Fwrite(p, N, "filtered.txt"); // Ausgabe in filtered.txt
   
   return 0;
 }

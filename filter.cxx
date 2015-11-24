@@ -20,18 +20,20 @@ void reading(double* const p, const int N, const string& fname){
     in.close(); // close input file stream
 }
 
-void dreiMitt(double* const p, const int N){
+void dreiMitt(double* const p, const int N, int Anz){
   double bu1,bu2 = p[0]; // Puffer
   
-  for(int i = 1; i < (N-1); i++){
-    bu1 = p[i];
-    p[i] = (bu2+p[i]+p[i+1])/3.0;
-    bu2 = bu1;
+  for(int k = 0; k < Anz; k++){
+    for(int i = 1; i < (N-1); i++){
+      bu1 = p[i];
+      p[i] = (bu2+p[i]+p[i+1])/3.0;
+      bu2 = bu1;
+    }
+    // Randwert links
+    p[0] = p[1];
+    // Randwert rechts
+    p[N-1] = p[0];
   }
-  // Randwert links
-  p[0] = p[1];
-  // Randwert rechts
-  p[N-1] = p[N-2];
 }
 
 void Fwrite(double* const p, const int N, string fname){
@@ -51,7 +53,7 @@ int main(){
   // cout << N << endl; // debug
   
   reading(p, N, filename); // Datei einlesen und in p schreiben
-  dreiMitt(p, N); // fortlaufende Mittelwerte bestimmen und in p schreiben
+  dreiMitt(p, N, 2); // fortlaufende Mittelwerte bestimmen und in p schreiben in 2facher Filterung
   
   // Dateiausgabe
   Fwrite(p, N, "filtered.txt"); // Ausgabe in filtered.txt
